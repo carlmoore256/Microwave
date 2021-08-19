@@ -6,25 +6,29 @@
 //  Copyright © 2021 ANVIL. All rights reserved.
 //
 
-#ifndef DigitDisplay_h
-#define DigitDisplay_h
+#ifndef Microwave_h
+#define Microwave_h
 
 #include <stdio.h>
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-#endif /* DigitDisplay_h */
+#endif /* Microwave_h */
 
 
-class DigitDisplay : public Component, public Timer, private Time
+class Microwave : public Component, public Timer, private Time
 {
 public:
-	DigitDisplay(MicrowaveAudioProcessor&);
-	~DigitDisplay();
+	Microwave(MicrowaveAudioProcessor&);
+	~Microwave();
 	
 	void paint(Graphics&) override;
 	
 	void timerCallback() override;
+	
+	void startCook();
+	
+	void endCook();
 	
 	// set the 4 digits, -1 for off
 	void setDigits(int, int, int, int);
@@ -40,31 +44,46 @@ public:
 	
 	// immediately shows clock
 	void showClock();
+	
+	// handles the graphics switch for opening and closing door
+	void openCloseDoor();
+	
 
 private:
 	MicrowaveAudioProcessor& processor;
 	
 	Array<Image> loadDigits();
 	Array<Image> m_Digits;
+	Array<Image> imagePanels;
+
 	int digitLoc [2] = {872, 161};
 	
-
 	// contains current digits being displayed, -1=no digits
 	int displayedDigits [4] = { -1, -1, -1, -1 };
+	
+	bool doorOpen = false;
 	
 	// 0 = display time
 	// 1 = digit entry
 	// 2 = digit countdown
-	int displayMode = 0;
+	// 3 = cook
+	int operationMode = 0;
 	
 	int timerValue;
+	
+	Image ui_InteriorOff;
+	Image ui_InteriorOn;
+	Image ui_DoorClosed;
+	Image ui_DoorOpen;
+	
+	void setInterfaceImages(int);
 	
 	// draw a digit on the microwave display
 	// position starting right to left
 	void drawDigit(Graphics&, int, int);
 	
 	// handles the digit countdown
-	void countdownRoutine();
+	void timerCountdown();
 
 	void displayTime();
 	
@@ -77,5 +96,5 @@ private:
 	// converts an int (cumulative seconds) to
 	void setDisplaySecondsTime(int);
 	
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DigitDisplay);
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Microwave);
 };

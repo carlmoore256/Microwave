@@ -12,6 +12,14 @@ Microwave::Microwave(MicrowaveAudioProcessor& p) : processor(p)
 {
 	m_Digits = loadDigits();
 	Timer::startTimerHz(1);
+	
+	ui_InteriorOff = ImageCache::getFromMemory (BinaryData::Microwave_Interior_Off_png, BinaryData::Microwave_Interior_Off_pngSize);
+	ui_InteriorOn = ImageCache::getFromMemory (BinaryData::Microwave_Interior_On_png, BinaryData::Microwave_Interior_On_pngSize);
+	
+	ui_DoorClosed = ImageCache::getFromMemory (BinaryData::Microwave_Front_Window_png, BinaryData::Microwave_Front_Window_pngSize);
+	ui_DoorOpen = ImageCache::getFromMemory (BinaryData::Microwave_Open_png, BinaryData::Microwave_Open_pngSize);
+	
+	setInterfaceImages(0);
 }
 
 Microwave::~Microwave()
@@ -21,6 +29,9 @@ Microwave::~Microwave()
 
 void Microwave::paint(Graphics& g)
 {
+	for(Image image : imagePanels)
+		g.drawImageAt(image, 0, 0);
+	
 	for(int i = 0; i < 4; i++)
 	{
 		if(displayedDigits[i] >= 0)
@@ -37,8 +48,10 @@ void Microwave::timerCallback()
 		case 1:
 			break;
 		case 2:
-			countdownRoutine();
+			timerCountdown();
 			break;
+		case 3:
+			timerCountdown();
 		default:
 			break;
 	}
@@ -47,12 +60,25 @@ void Microwave::timerCallback()
 
 void Microwave::startCook()
 {
+//	processor.beepShort -> resetPlay();
+//	if(doorOpen)
+//	{
+//		processor.beepError -> resetPlay();
+//		return;
+//	}
+	processor.microwaveSound -> startPlay();
+	setTimeCountdown();
+	setInterfaceImages(1);
 	operationMode = 3;
+	repaint();
 }
 
 void Microwave::endCook()
 {
-	
+	processor.microwaveSound -> stopPlay();
+	setInterfaceImages(0);
+	processor.beepFinished -> resetPlay();
+	operationMode = 0;
 }
 
 
@@ -80,12 +106,109 @@ void Microwave::addDigit(int newDigit)
 		case 2:
 			processor.beepError -> resetPlay();
 			break;
+		case 3:
+			processor.beepError -> resetPlay();
+			break;
 		default:
 			processor.beepError -> resetPlay();
 			break;
 	}
 	
 	repaint();
+}
+
+
+void Microwave::setTimeCountdown()
+{
+	switch (operationMode) {
+		case 0:
+			processor.beepError -> resetPlay();
+			break;
+		case 1:
+			timerValue = getCumulativeTime();
+			operationMode = 2;
+			processor.beepShort -> resetPlay();
+			break;
+		case 2:
+			// timer cancel, show time
+			operationMode = 0;
+			processor.beepLong -> resetPlay();
+			break;
+		case 3:
+			timerValue = getCumulativeTime();
+//			processor.beepError -> resetPlay();
+			break;
+		default:
+			break;
+	}
+}
+
+void Microwave::cancelOperation()
+{
+	switch (operationMode) {
+		case 0:
+			processor.beepShort -> resetPlay();
+			break;
+		case 1:
+			processor.beepShort -> resetPlay();
+			displayTime();
+			repaint();
+			break;
+		case 2:
+			processor.beepShort -> resetPlay();
+			displayTime();
+			repaint();
+		case 3:
+			setInterfaceImages(0);
+			processor.beepFinished -> resetPlay();
+			break;
+
+		default:
+			break;
+	}
+	operationMode = 0;
+}
+
+void Microwave::openCloseDoor()
+{
+	// cancel cook when door is opened
+	if (operationMode == 3)
+		operationMode = 0;
+	
+	if(doorOpen)
+	{
+		processor.openDoor -> resetPlay();
+		setInterfaceImages(2);
+	} else {
+		processor.closeDoor -> resetPlay();
+		setInterfaceImages(0);
+	}
+	
+	doorOpen = !doorOpen;
+	repaint();
+}
+
+//================================================================
+
+void Microwave::setInterfaceImages(int visualMode)
+{
+	// 0 = closed, dark
+	// 1 = closed, light (cook)
+	// 2 = open, light
+
+	switch (visualMode) {
+		case 0:
+			imagePanels = {  ui_InteriorOff, ui_DoorClosed };
+			break;
+		case 1:
+			imagePanels = { ui_InteriorOn, ui_DoorClosed };
+			break;
+		case 2:
+			imagePanels = { ui_DoorOpen };
+			break;
+		default:
+			break;
+	}
 }
 
 void Microwave::drawDigit(Graphics& g, int digit, int position)
@@ -119,12 +242,14 @@ Array<Image> Microwave::loadDigits()
 }
 
 
-void Microwave::countdownRoutine()
+void Microwave::timerCountdown()
 {
 	if (timerValue > 0){
 		setDisplaySecondsTime(timerValue);
 		timerValue--;
 	} else {
+		if (operationMode == 3)
+			endCook();
 		setDigits(-1,-1,-1,-1);
 		processor.beepLong -> resetPlay();
 		operationMode = 0;
@@ -156,54 +281,6 @@ void Microwave::displayTime()
 	displayedDigits[3] = hr0;
 }
 
-void Microwave::setTimeCountdown()
-{
-	switch (operationMode) {
-		case 0:
-			processor.beepError -> resetPlay();
-			break;
-		case 1:
-			timerValue = getCumulativeTime();
-			operationMode = 2;
-			processor.beepShort -> resetPlay();
-			break;
-		case 2:
-			// timer cancel, show time
-			operationMode = 0;
-			processor.beepLong -> resetPlay();
-			break;
-		case 3:
-			processor.beepError -> resetPlay();
-			break;
-		default:
-			break;
-	}
-}
-
-void Microwave::cancelOperation()
-{
-	switch (operationMode) {
-		case 0:
-			processor.beepShort -> resetPlay();
-			break;
-		case 1:
-			processor.beepShort -> resetPlay();
-			displayTime();
-			repaint();
-			break;
-		case 2:
-			processor.beepShort -> resetPlay();
-			displayTime();
-			repaint();
-		case 3:
-//			processor.
-			break;
-
-		default:
-			break;
-	}
-	operationMode = 0;
-}
 
 int Microwave::getCumulativeTime()
 {

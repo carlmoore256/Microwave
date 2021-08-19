@@ -19,7 +19,10 @@ MicrowaveAudioProcessor::MicrowaveAudioProcessor()
 
 MicrowaveAudioProcessor::~MicrowaveAudioProcessor()
 {
-	delete beepShort;
+	for(InterfaceSound* i_s : interfaceSounds)
+		delete i_s;
+	
+	delete microwaveSound;
 }
 
 //===============================================================
@@ -101,6 +104,8 @@ void MicrowaveAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 	interfaceSounds.add(beepFinished);
 	interfaceSounds.add(openDoor);
 	interfaceSounds.add(closeDoor);
+	
+	microwaveSound = new OperationSound(m_granularWindowSize, m_granularHopSize);
 }
 
 void MicrowaveAudioProcessor::releaseResources()
@@ -171,6 +176,8 @@ void MicrowaveAudioProcessor::processInterfaceSounds(AudioBuffer<float>& buffer)
 {
 	for(InterfaceSound* interfaceSound : interfaceSounds)
 		interfaceSound -> writeNextBuffer(buffer);
+	
+	microwaveSound -> writeNextBuffer(buffer);
 }
 
 //================================================================

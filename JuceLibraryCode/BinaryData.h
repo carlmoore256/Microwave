@@ -8,6 +8,12 @@
 
 namespace BinaryData
 {
+    extern const char*   Microwave_Continue_wav;
+    const int            Microwave_Continue_wavSize = 485836;
+
+    extern const char*   Microwave_Start_wav;
+    const int            Microwave_Start_wavSize = 221236;
+
     extern const char*   beep_finished_wav;
     const int            beep_finished_wavSize = 337980;
 
@@ -25,6 +31,12 @@ namespace BinaryData
 
     extern const char*   beep_clip_wav;
     const int            beep_clip_wavSize = 23142;
+
+    extern const char*   Microwave_Interior_Off_png;
+    const int            Microwave_Interior_Off_pngSize = 315747;
+
+    extern const char*   Microwave_Interior_On_png;
+    const int            Microwave_Interior_On_pngSize = 765694;
 
     extern const char*   Microwave_Closed_Dark_png;
     const int            Microwave_Closed_Dark_pngSize = 831024;
@@ -159,7 +171,7 @@ namespace BinaryData
     const int            Microwave_Front_1000x543_pngSize = 473673;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 50;
+    const int namedResourceListSize = 54;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

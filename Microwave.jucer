@@ -5,6 +5,10 @@
               pluginManufacturer="ANVIL" companyName="ANVIL">
   <MAINGROUP id="WkQAOk" name="Microwave">
     <GROUP id="{F8F3F4E7-1AE6-FE05-0506-402C24B43F74}" name="Source">
+      <FILE id="DvvzY8" name="OperationSound.cpp" compile="1" resource="0"
+            file="Source/OperationSound.cpp"/>
+      <FILE id="zU1Bzv" name="OperationSound.h" compile="0" resource="0"
+            file="Source/OperationSound.h"/>
       <FILE id="vkPHo1" name="InterfaceSound.cpp" compile="1" resource="0"
             file="Source/InterfaceSound.cpp"/>
       <FILE id="WGiD3K" name="Microwave.cpp" compile="1" resource="0" file="Source/Microwave.cpp"/>
@@ -12,6 +16,10 @@
             file="Source/InterfaceSound.h"/>
       <FILE id="y44ytv" name="Microwave.h" compile="0" resource="0" file="Source/Microwave.h"/>
       <GROUP id="{9E2902B2-9BD7-AC3A-2594-9DEC54E4B006}" name="Audio">
+        <FILE id="DnG7YE" name="Microwave_Continue.wav" compile="0" resource="1"
+              file="../Audio/p220/Microwave_Continue.wav"/>
+        <FILE id="faiASf" name="Microwave_Start.wav" compile="0" resource="1"
+              file="../Audio/p220/Microwave_Start.wav"/>
         <FILE id="C6p47Y" name="beep_finished.wav" compile="0" resource="1"
               file="../Audio/p220/beep_finished.wav"/>
         <FILE id="jsuJzD" name="door_close.wav" compile="0" resource="1" file="../Audio/p220/door_close.wav"/>
@@ -21,6 +29,14 @@
         <FILE id="HhWrjT" name="beep_clip.wav" compile="0" resource="1" file="../Audio/beep_clip.wav"/>
       </GROUP>
       <GROUP id="{C3E5EB4D-F4A7-EFA4-432F-704FFC721A57}" name="Images">
+        <FILE id="PHVevM" name="MicrowaveSound.cpp" compile="1" resource="0"
+              file="Source/MicrowaveSound.cpp"/>
+        <FILE id="RmWuV9" name="MicrowaveSound.h" compile="0" resource="0"
+              file="Source/MicrowaveSound.h"/>
+        <FILE id="Wkgc9o" name="Microwave_Interior_Off.png" compile="0" resource="1"
+              file="../Textures/Microwave_Interior_Off.png"/>
+        <FILE id="Wq0OCr" name="Microwave_Interior_On.png" compile="0" resource="1"
+              file="../Textures/Microwave_Interior_On.png"/>
         <FILE id="XPb190" name="Microwave_Closed_Dark.png" compile="0" resource="1"
               file="../Textures/Microwave_Closed_Dark.png"/>
         <FILE id="aTG4lF" name="Microwave_Front_Window.png" compile="0" resource="1"
@@ -101,6 +117,7 @@
         <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -114,6 +131,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

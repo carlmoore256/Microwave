@@ -3,6 +3,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "OperationSound.h"
 #include "InterfaceSound.h"
 
 //==============================================================================
@@ -55,6 +56,11 @@ public:
 
 	InterfaceSound* openDoor;
 	InterfaceSound* closeDoor;
+	
+	OperationSound* microwaveSound;
+	
+	int m_granularWindowSize = 128;
+	int m_granularHopSize = 32;
 
 private:
 	

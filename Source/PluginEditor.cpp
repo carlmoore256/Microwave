@@ -5,13 +5,10 @@
 //================================================================
 
 MicrowaveAudioProcessorEditor::MicrowaveAudioProcessorEditor (MicrowaveAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), digitDisplay(p)
+    : AudioProcessorEditor (&p), audioProcessor (p), microwaveController(p)
 {
     setSize (1000, 543);
-	microwaveFrontPanel = ImageCache::getFromMemory (BinaryData::Microwave_Closed_Dark_png, BinaryData::Microwave_Closed_Dark_pngSize);
-	microwaveInternal = ImageCache::getFromMemory(BinaryData::Microwave_Open_png, BinaryData::Microwave_Open_pngSize);
-	
-	addAndMakeVisible(digitDisplay);
+	addAndMakeVisible(microwaveController);
 	
 	// set up digit buttons
 	int x_pos = 864;
@@ -35,17 +32,17 @@ MicrowaveAudioProcessorEditor::MicrowaveAudioProcessorEditor (MicrowaveAudioProc
 	addAndMakeVisible(buttonStart);
 	buttonStart.setBounds(861, 385, 30, 30);
 	buttonStart.setAlpha(0.0f);
-	buttonStart.onClick = [this] { digitDisplay.setTimeCountdown(); };
+	buttonStart.onClick = [this] { microwaveController.startCook(); };
 	
 	addAndMakeVisible(buttonCancel);
 	buttonCancel.setBounds(923, 385, 30, 30);
 	buttonCancel.setAlpha(0.0f);
-	buttonCancel.onClick = [this] { digitDisplay.cancelOperation(); };
+	buttonCancel.onClick = [this] { microwaveController.cancelOperation(); };
 	
 	addAndMakeVisible(buttonDoor);
 	buttonDoor.setBounds(785, 84, 44, 390);
 	buttonDoor.setAlpha(0.0f);
-	buttonDoor.onClick = [this] { openCloseDoor(); };
+	buttonDoor.onClick = [this] { microwaveController.openCloseDoor(); };
 }
 
 MicrowaveAudioProcessorEditor::~MicrowaveAudioProcessorEditor()
@@ -59,28 +56,19 @@ MicrowaveAudioProcessorEditor::~MicrowaveAudioProcessorEditor()
 void MicrowaveAudioProcessorEditor::paint (juce::Graphics& g)
 {
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-
-	g.drawImageAt (microwaveInternal, 0, 0);
-	
-	if (!m_DoorOpen)
-		g.drawImageAt (microwaveFrontPanel, 0, 0);
-//    g.setColour (juce::Colours::white);
-//    g.setFont (15.0f);
-//    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void MicrowaveAudioProcessorEditor::resized()
 {
-	digitDisplay.setBounds(getLocalBounds());
+	microwaveController.setBounds(getLocalBounds());
 }
 
 void MicrowaveAudioProcessorEditor::digitButtonClick(TextButton* button, int num)
 {
 	if(num <= 9)
-		digitDisplay.addDigit(num);
+		microwaveController.addDigit(num);
 	if(num == 10)
-		digitDisplay.setTimeCountdown();
+		microwaveController.setTimeCountdown();
 }
 
 void MicrowaveAudioProcessorEditor::buttonClicked(Button* button)
@@ -88,17 +76,3 @@ void MicrowaveAudioProcessorEditor::buttonClicked(Button* button)
 }
 
 //===============================================================
-
-void MicrowaveAudioProcessorEditor::openCloseDoor()
-{
-	if(m_DoorOpen)
-	{
-		audioProcessor.openDoor -> resetPlay();
-	} else {
-		audioProcessor.closeDoor -> resetPlay();
-	}
-	
-	m_DoorOpen = !m_DoorOpen;
-	repaint();
-}
-

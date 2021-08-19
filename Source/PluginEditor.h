@@ -24,10 +24,10 @@ private:
 	
     MicrowaveAudioProcessor& audioProcessor;
 
-	Image microwaveFrontPanel;
-	Image microwaveInternal;
+//	Image microwaveFrontPanel;
+//	Image microwaveInternal;
 	
-	Microwave digitDisplay;
+	Microwave microwaveController;
 	
 	TextButton* digitButtons [12];
 	
@@ -35,10 +35,9 @@ private:
 	TextButton buttonStart;
 	TextButton buttonDoor;
 	
-	bool m_DoorOpen = false;
+//	bool m_DoorOpen = false;
 	
-	// handles the graphics switch for opening and closing door
-	void openCloseDoor();
+//	void openCloseDoor();
 	
 	void startStopMicrowave();
 	
