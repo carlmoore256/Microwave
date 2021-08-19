@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="RA9PXC" name="Microwave" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="1" displaySplashScreen="1" jucerFormatVersion="1"
+              pluginManufacturer="ANVIL" companyName="ANVIL">
+  <MAINGROUP id="WkQAOk" name="Microwave">
+    <GROUP id="{F8F3F4E7-1AE6-FE05-0506-402C24B43F74}" name="Source">
+      <FILE id="vkPHo1" name="InterfaceSound.cpp" compile="1" resource="0"
+            file="Source/InterfaceSound.cpp"/>
+      <FILE id="WGiD3K" name="Microwave.cpp" compile="1" resource="0" file="Source/Microwave.cpp"/>
+      <FILE id="sJhIZz" name="InterfaceSound.h" compile="0" resource="0"
+            file="Source/InterfaceSound.h"/>
+      <FILE id="y44ytv" name="Microwave.h" compile="0" resource="0" file="Source/Microwave.h"/>
+      <GROUP id="{9E2902B2-9BD7-AC3A-2594-9DEC54E4B006}" name="Audio">
+        <FILE id="C6p47Y" name="beep_finished.wav" compile="0" resource="1"
+              file="../Audio/p220/beep_finished.wav"/>
+        <FILE id="jsuJzD" name="door_close.wav" compile="0" resource="1" file="../Audio/p220/door_close.wav"/>
+        <FILE id="Lkqr6z" name="door_open.wav" compile="0" resource="1" file="../Audio/p220/door_open.wav"/>
+        <FILE id="NZ0mIs" name="beep_long.wav" compile="0" resource="1" file="../Audio/beep_long.wav"/>
+        <FILE id="PJ0tix" name="error_beep.wav" compile="0" resource="1" file="../Audio/error_beep.wav"/>
+        <FILE id="HhWrjT" name="beep_clip.wav" compile="0" resource="1" file="../Audio/beep_clip.wav"/>
+      </GROUP>
+      <GROUP id="{C3E5EB4D-F4A7-EFA4-432F-704FFC721A57}" name="Images">
+        <FILE id="XPb190" name="Microwave_Closed_Dark.png" compile="0" resource="1"
+              file="../Textures/Microwave_Closed_Dark.png"/>
+        <FILE id="aTG4lF" name="Microwave_Front_Window.png" compile="0" resource="1"
+              file="../Textures/Microwave_Front_Window.png"/>
+        <FILE id="k2NiCx" name="Microwave_Open.png" compile="0" resource="1"
+              file="../Textures/Microwave_Open.png"/>
+        <GROUP id="{D09B8B84-A06E-AF57-9444-2A6AEBD7990E}" name="digits">
+          <FILE id="PKSUpC" name="digit_0_0.png" compile="0" resource="1" file="../Textures/digits/digit_0_0.png"/>
+          <FILE id="xboKGo" name="digit_0_1.png" compile="0" resource="1" file="../Textures/digits/digit_0_1.png"/>
+          <FILE id="ZYmmmb" name="digit_0_2.png" compile="0" resource="1" file="../Textures/digits/digit_0_2.png"/>
+          <FILE id="yaPFhZ" name="digit_0_3.png" compile="0" resource="1" file="../Textures/digits/digit_0_3.png"/>
+          <FILE id="jJ2xs6" name="digit_0_4.png" compile="0" resource="1" file="../Textures/digits/digit_0_4.png"/>
+          <FILE id="ZPOGO0" name="digit_0_5.png" compile="0" resource="1" file="../Textures/digits/digit_0_5.png"/>
+          <FILE id="pmkM4u" name="digit_0_6.png" compile="0" resource="1" file="../Textures/digits/digit_0_6.png"/>
+          <FILE id="cMfUq9" name="digit_0_7.png" compile="0" resource="1" file="../Textures/digits/digit_0_7.png"/>
+          <FILE id="puQj5G" name="digit_0_8.png" compile="0" resource="1" file="../Textures/digits/digit_0_8.png"/>
+          <FILE id="D3zjK5" name="digit_0_9.png" compile="0" resource="1" file="../Textures/digits/digit_0_9.png"/>
+          <FILE id="fvR0qu" name="digit_1_0.png" compile="0" resource="1" file="../Textures/digits/digit_1_0.png"/>
+          <FILE id="LxdIQw" name="digit_1_1.png" compile="0" resource="1" file="../Textures/digits/digit_1_1.png"/>
+          <FILE id="uB09Cw" name="digit_1_2.png" compile="0" resource="1" file="../Textures/digits/digit_1_2.png"/>
+          <FILE id="Y7tLnh" name="digit_1_3.png" compile="0" resource="1" file="../Textures/digits/digit_1_3.png"/>
+          <FILE id="JVBgKU" name="digit_1_4.png" compile="0" resource="1" file="../Textures/digits/digit_1_4.png"/>
+          <FILE id="vH7S48" name="digit_1_5.png" compile="0" resource="1" file="../Textures/digits/digit_1_5.png"/>
+          <FILE id="xvJzZa" name="digit_1_6.png" compile="0" resource="1" file="../Textures/digits/digit_1_6.png"/>
+          <FILE id="c43eSD" name="digit_1_7.png" compile="0" resource="1" file="../Textures/digits/digit_1_7.png"/>
+          <FILE id="omNwip" name="digit_1_8.png" compile="0" resource="1" file="../Textures/digits/digit_1_8.png"/>
+          <FILE id="rjIcNb" name="digit_1_9.png" compile="0" resource="1" file="../Textures/digits/digit_1_9.png"/>
+          <FILE id="IPNtgZ" name="digit_2_0.png" compile="0" resource="1" file="../Textures/digits/digit_2_0.png"/>
+          <FILE id="PVjJ6u" name="digit_2_1.png" compile="0" resource="1" file="../Textures/digits/digit_2_1.png"/>
+          <FILE id="ScVc5d" name="digit_2_2.png" compile="0" resource="1" file="../Textures/digits/digit_2_2.png"/>
+          <FILE id="wfGBs0" name="digit_2_3.png" compile="0" resource="1" file="../Textures/digits/digit_2_3.png"/>
+          <FILE id="y5JT9X" name="digit_2_4.png" compile="0" resource="1" file="../Textures/digits/digit_2_4.png"/>
+          <FILE id="AZfSy2" name="digit_2_5.png" compile="0" resource="1" file="../Textures/digits/digit_2_5.png"/>
+          <FILE id="rj6ZaW" name="digit_2_6.png" compile="0" resource="1" file="../Textures/digits/digit_2_6.png"/>
+          <FILE id="ohmdoY" name="digit_2_7.png" compile="0" resource="1" file="../Textures/digits/digit_2_7.png"/>
+          <FILE id="Kp5HGh" name="digit_2_8.png" compile="0" resource="1" file="../Textures/digits/digit_2_8.png"/>
+          <FILE id="SIhvfe" name="digit_2_9.png" compile="0" resource="1" file="../Textures/digits/digit_2_9.png"/>
+          <FILE id="JMHOYQ" name="digit_3_0.png" compile="0" resource="1" file="../Textures/digits/digit_3_0.png"/>
+          <FILE id="nPmeO2" name="digit_3_1.png" compile="0" resource="1" file="../Textures/digits/digit_3_1.png"/>
+          <FILE id="cIx0Y2" name="digit_3_2.png" compile="0" resource="1" file="../Textures/digits/digit_3_2.png"/>
+          <FILE id="uM7Jsm" name="digit_3_3.png" compile="0" resource="1" file="../Textures/digits/digit_3_3.png"/>
+          <FILE id="jlIt8U" name="digit_3_4.png" compile="0" resource="1" file="../Textures/digits/digit_3_4.png"/>
+          <FILE id="AW3ToV" name="digit_3_5.png" compile="0" resource="1" file="../Textures/digits/digit_3_5.png"/>
+          <FILE id="nP3Mpq" name="digit_3_6.png" compile="0" resource="1" file="../Textures/digits/digit_3_6.png"/>
+          <FILE id="H5Vned" name="digit_3_7.png" compile="0" resource="1" file="../Textures/digits/digit_3_7.png"/>
+          <FILE id="zTnFIT" name="digit_3_8.png" compile="0" resource="1" file="../Textures/digits/digit_3_8.png"/>
+          <FILE id="IN2Kh1" name="digit_3_9.png" compile="0" resource="1" file="../Textures/digits/digit_3_9.png"/>
+        </GROUP>
+        <FILE id="BuAHDv" name="Microwave_Front_1000x543.png" compile="0" resource="1"
+              file="../Textures/Microwave_Front_1000x543.png"/>
+      </GROUP>
+      <FILE id="WXN93N" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="YN1SVe" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="uSCJUf" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="vZWSx8" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="NewProject"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="NewProject"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
