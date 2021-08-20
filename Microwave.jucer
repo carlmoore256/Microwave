@@ -15,6 +15,10 @@
       <FILE id="sJhIZz" name="InterfaceSound.h" compile="0" resource="0"
             file="Source/InterfaceSound.h"/>
       <FILE id="y44ytv" name="Microwave.h" compile="0" resource="0" file="Source/Microwave.h"/>
+      <FILE id="uDYnjP" name="PopcornProcessor.cpp" compile="1" resource="0"
+            file="Source/PopcornProcessor.cpp"/>
+      <FILE id="ZRBqpy" name="PopcornProcessor.hpp" compile="0" resource="0"
+            file="Source/PopcornProcessor.hpp"/>
       <GROUP id="{9E2902B2-9BD7-AC3A-2594-9DEC54E4B006}" name="Audio">
         <FILE id="DnG7YE" name="Microwave_Continue.wav" compile="0" resource="1"
               file="../Audio/p220/Microwave_Continue.wav"/>

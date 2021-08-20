@@ -5,6 +5,7 @@
 #include <JuceHeader.h>
 #include "OperationSound.h"
 #include "InterfaceSound.h"
+#include "PopcornProcessor.hpp"
 
 //==============================================================================
 /**
@@ -59,10 +60,16 @@ public:
 	
 	OperationSound* microwaveSound;
 	
-	int m_granularWindowSize = 128;
-	int m_granularHopSize = 32;
+	int m_granularWindowSize = 4096;
+	int m_granularHopSize = 512;
 
 private:
+	
+	PopcornProcessor* popcornProcessor;
+	
+	AudioBuffer<float> popcornBuffer;
+	
+	void popcorn(AudioBuffer<float>&);
 	
 	void processInterfaceSounds (AudioBuffer<float>&);
 	AudioBuffer<float> beepBuffer;

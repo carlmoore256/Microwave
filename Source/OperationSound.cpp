@@ -18,11 +18,15 @@ OperationSound::OperationSound(int winSize, int hopSize) : m_windowSize(winSize)
 	grainBuffer.setSize(1, winSize);
 	grainBuffer.clear();
 	
-	ringBuffSize = winSize * 16;
-	ringBuffSizeStep = winSize * 4;
+	ringBuffSize = winSize * 32;
+	ringBuffSizeStep = winSize * 8;
 	
 	ringBuffer.setSize(microwaveContinue.getNumChannels(), ringBuffSize);
 	ringBuffer.clear();
+	
+	// initialize ring buffer
+	for (int i = 0; i < 16; i++)
+		writeGranularToRing(microwaveContinue, m_windowSize, m_hopSize);
 }
 
 OperationSound::~OperationSound()
@@ -50,15 +54,21 @@ void OperationSound::writeNextBuffer(AudioBuffer<float>& outBuffer)
 		
 		sampleIndex += outBuffer.getNumSamples();
 	} else {
-		writeGranularSamples(outBuffer, microwaveContinue, m_windowSize, m_hopSize);
+		writeRingToOutput(outBuffer, microwaveContinue);
+
+//		writeGranularSamples(outBuffer, microwaveContinue, m_windowSize, m_hopSize);
 	}
 }
 
 void OperationSound::startPlay()
 {
+	ringBuffReadIdx = m_windowSize;
 	bufferPlaying = true;
 	playingStartup = true;
 	sampleIndex = 0;
+	// initialize ring buffer
+	for (int i = 0; i < 16; i++)
+		writeGranularToRing(microwaveContinue, m_windowSize, m_hopSize);
 }
 
 void OperationSound::stopPlay()
@@ -71,17 +81,35 @@ void OperationSound::stopPlay()
 
 void OperationSound::writeGranularToRing(AudioBuffer<float>& sourceBuffer, int grainSize, int hopSize)
 {
-	if (ringBuffWriteIdx + ringBuffSizeStep > ringBuffSize)
-		ringBuffWriteIdx = 0;
+	Random rand;
+	int sourceBuffSize = sourceBuffer.getNumSamples();
+	int numHops = 0;
+	int numWin = 0;
 	
-	Array<int> granularPlayheads = getGranularPlayheads(sourceBuffer.getNumSamples(), grainSize, ringBuffSizeStep, hopSize);
 	
-	int destPlayhead = 0;
-	
-	for(int playhead : granularPlayheads)
+	int startIdx = ringBuffWriteIdx;
+
+//	while ((numWin * hopSize) + grainSize < ringBuffSizeStep)
+	for (int i = 0; i < (ringBuffSizeStep-grainSize) / hopSize; i++)
 	{
-		for(int channel = 0; channel < ringBuffer.getNumChannels(); channel++)
+		// location within source grain to copy to buffer
+		int grainStartIdx = 0;
+		int grainNumSamples = grainSize;
+		
+//		 ensure beginning  of buffer is properly filled
+		if(ringBuffWriteIdx < grainSize && (grainSize)-(numHops * hopSize) > 0)
 		{
+			grainStartIdx = (grainSize) - (numHops * hopSize);
+			grainNumSamples = grainSize - grainStartIdx;
+		}
+//
+		if(ringBuffWriteIdx + grainSize > ringBuffSize)
+			grainNumSamples = ringBuffSize - ringBuffWriteIdx;
+
+		
+		for(int channel=0; channel<ringBuffer.getNumChannels(); channel++)
+		{
+			int playhead = rand.nextInt(sourceBuffSize - grainSize - 1);
 			// copy from source to grain buffer
 			grainBuffer.copyFrom(0, 0, sourceBuffer, channel % sourceBuffer.getNumChannels(), playhead, grainSize);
 			// get write pointer to intermediate grain buffer
@@ -89,29 +117,75 @@ void OperationSound::writeGranularToRing(AudioBuffer<float>& sourceBuffer, int g
 			// apply a window to the grain buffer
 			window.multiplyWithWindowingTable(grainBuffData, grainSize);
 			
+//			std::cout << " buff mag " + std::to_string(grainBuffer.getRMSLevel(0, 0, grainSize)) + "\n";
+//			// add the windowed grain to the output buffer
+//			ringBuffer.addFrom(channel, ringBuffWriteIdx, grainBuffer, channel, grainStartIdx, grainNumSamples);
 			// add the windowed grain to the output buffer
-			ringBuffer.addFrom(channel, ringBuffWriteIdx + destPlayhead, grainBuffer, channel, 0, grainSize);
+			ringBuffer.addFrom(channel, ringBuffWriteIdx, grainBuffer, channel, grainStartIdx, grainNumSamples);
+			
+			// take care of the wrap around when running into end of buffer
+			if (grainNumSamples != grainSize)
+			{
+
+				ringBuffer.addFrom(channel,
+								   0,
+								   grainBuffer,
+								   channel,
+								   grainNumSamples,
+								   grainSize-grainNumSamples);
+			}
 		}
 		// step forward in hop
-		destPlayhead += hopSize;
+		numHops++;
+		numWin++;
+		
+		ringBuffWriteIdx += hopSize;
+		
+		if(ringBuffWriteIdx >= ringBuffSize)
+			numHops = 0;
+		
+		ringBuffWriteIdx %= ringBuffSize;
+
 	}
-	ringBuffWriteIdx += ringBuffSizeStep;
+	
+//	std::cout << "DEST PLAYHEAD " + std::to_string(destPlayhead) + " ring buff write idx " + std::to_string(ringBuffWriteIdx) + "\n";
+	
+	std::cout << "START IDX " + std::to_string(startIdx) + " END IDX " + std::to_string(ringBuffWriteIdx) + " PLAY IDX " + std::to_string(ringBuffReadIdx) + "\n";
+	
 }
 
 void OperationSound::writeRingToOutput(AudioBuffer<float>& outBuffer, AudioBuffer<float>& sourceBuffer)
 {
+	
 	int blockSize = outBuffer.getNumSamples();
 	
-	if(ringBuffReadIdx + blockSize > ringBuffSize)
-		ringBuffReadIdx = 0;
+//	if (ringBuffReadIdx % ringBuffSizeStep >= ringBuffSizeStep - 1)
+//	{
+//		writeGranularToRing(sourceBuffer, m_windowSize, m_hopSize);
+//	}
+//	if (ringBuffSamplesRead >= ringBuffSizeStep)
+//	{
+//		writeGranularToRing(sourceBuffer, m_windowSize, m_hopSize);
+//		ringBuffSamplesRead = 0;
+//	}
+
 	
 	for(int channel = 0; channel < outBuffer.getNumChannels(); channel++)
-	{
 		outBuffer.addFrom(channel, 0, ringBuffer, channel % ringBuffer.getNumChannels(), ringBuffReadIdx, blockSize);
-	}
-	ringBuffSamplesRead += blockSize;
-	if (ringBuffSamplesRead >= ringBuffSizeStep)
-		writeGranularToRing(sourceBuffer, m_windowSize, m_hopSize);
+	
+	// clear out part played
+//	ringBuffer.clear(ringBuffReadIdx, blockSize);
+	
+	ringBuffReadIdx += blockSize;
+	
+//	if (ringBuffReadIdx >= ringBuffSize)
+//		ringBuffReadIdx = 0;
+	
+	ringBuffReadIdx %= ringBuffSize;
+	
+	// process next batch into the ring buffer
+//	ringBuffSamplesRead += blockSize;
+
 }
 
 // outBuffer is the destination, source provides samples and is granulated
@@ -146,7 +220,7 @@ Array<int> OperationSound::getGranularPlayheads(int bufferSize, int grainSize, i
 {
 	int numGrains = (int)((float)(blockSize - grainSize) / (float)hopSize);
 	
-	std::cout << "num grains " + std::to_string(numGrains) + "\n";
+//	std::cout << "num grains " + std::to_string(numGrains) + "\n";
 	
 	Array<int> granularPlayheads;
 

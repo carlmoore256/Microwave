@@ -159,8 +159,7 @@ void Microwave::cancelOperation()
 			displayTime();
 			repaint();
 		case 3:
-			setInterfaceImages(0);
-			processor.beepFinished -> resetPlay();
+			endCook();
 			break;
 
 		default:

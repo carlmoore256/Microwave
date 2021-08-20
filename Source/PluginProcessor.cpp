@@ -106,6 +106,8 @@ void MicrowaveAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 	interfaceSounds.add(closeDoor);
 	
 	microwaveSound = new OperationSound(m_granularWindowSize, m_granularHopSize);
+	
+	popcornProcessor = new PopcornProcessor(blockSize, AudioProcessor::getTotalNumOutputChannels());
 }
 
 void MicrowaveAudioProcessor::releaseResources()
@@ -178,6 +180,13 @@ void MicrowaveAudioProcessor::processInterfaceSounds(AudioBuffer<float>& buffer)
 		interfaceSound -> writeNextBuffer(buffer);
 	
 	microwaveSound -> writeNextBuffer(buffer);
+	
+	popcornProcessor -> processBlock(buffer);
+}
+
+void MicrowaveAudioProcessor::popcorn(AudioBuffer<float>& buffer)
+{
+	
 }
 
 //================================================================
