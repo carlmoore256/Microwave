@@ -10,14 +10,16 @@
 
 
 PopcornProcessor::PopcornProcessor(int winSize, int channels) : windowSize(winSize), numChannels(channels), window(winSize, dsp::WindowingFunction<float>::hann)
+//olaBuffer(winSize * 4, 4, channels)
 {
-	
 	for(int i = 0; i < numBuffers; i++)
 	{
 		auto* buff = new AudioBuffer<float>(numChannels, winSize);
 		buff -> clear();
 		popcornBuffers.add(buff);
 	}
+	
+	bufferIndex = 0;
 }
 
 PopcornProcessor::~PopcornProcessor()
@@ -30,10 +32,10 @@ void PopcornProcessor::processBlock(AudioBuffer<float>& buffer)
 {
 	int numChan = buffer.getNumChannels();
 	
-	int test = numChannels;
 	for(int channel = 0; channel < buffer.getNumChannels(); channel++)
 	{
 		float rms = buffer.getRMSLevel(channel, 0, buffer.getNumSamples());
+		
 		
 		runningAvgRMS.add(rms);
 		
@@ -41,21 +43,26 @@ void PopcornProcessor::processBlock(AudioBuffer<float>& buffer)
 			runningAvgRMS.remove(0);
 		
 		float avgRMS = calculateAvgRMS();
+//		float std_RMS = calculateStdRMS();
+//		stdAccum.addValue(std_RMS);
 
-		if (rms > avgRMS)
+		if (avgRMS > rms)
 		{
-			int buffIdx = rand.nextInt(numBuffers);
-			popcornBuffers[buffIdx] -> clear();
-			popcornBuffers[buffIdx] -> addFrom(channel, 0, buffer, channel, 0, buffer.getNumSamples());
-		}
-		
-		
-		if(rms > avgRMS)
-		{
-			int buffIdx = rand.nextInt(numBuffers);
+			stdAccum.reset();
+//			int buffIdx = rand.nextInt(numBuffers);
+			popcornBuffers[bufferIndex % numBuffers] -> clear();
+			popcornBuffers[bufferIndex % numBuffers] -> addFrom(channel, 0, buffer, channel, 0, buffer.getNumSamples());
 			
+			auto* buffData = popcornBuffers[bufferIndex % numBuffers] -> getWritePointer(channel);
+			
+			window.multiplyWithWindowingTable(buffData, windowSize);
+			
+			int buffIdx = abs(bufferIndex - delayFactor) % numBuffers;
+			std::cout << "buff idx " + std::to_string(buffIdx) + "\n";
 //			std::cout << popcornBuffers[buffIdx]->getNumChannels();
 			buffer.addFrom(channel, 0, *popcornBuffers[buffIdx], channel, 0, popcornBuffers[buffIdx]->getNumSamples());
+			
+			bufferIndex++;
 		}
 
 	}
@@ -64,12 +71,22 @@ void PopcornProcessor::processBlock(AudioBuffer<float>& buffer)
 
 float PopcornProcessor::calculateAvgRMS()
 {
-	float avg = 0.f;
-	for(float rms : runningAvgRMS)
-		avg += rms;
+//	float avg = 0.f;
+	StatisticsAccumulator<float> statAccum;
 	
-	avg /= runningAvgRMS.size();
+	for(float value : runningAvgRMS)
+		statAccum.addValue(value);
 	
-	return avg;
+	return statAccum.getAverage();
+}
+
+float PopcornProcessor::calculateStdRMS()
+{
+	StatisticsAccumulator<float> statAccum;
+	
+	for (float rms : runningAvgRMS)
+		statAccum.addValue(rms);
+	
+	return statAccum.getStandardDeviation();
 }
 

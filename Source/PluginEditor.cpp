@@ -19,15 +19,33 @@ MicrowaveAudioProcessorEditor::MicrowaveAudioProcessorEditor (MicrowaveAudioProc
 		if (i % 3 == 0 && i != 0)
 			y_pos += 19;
 		TextButton* button = new TextButton();
-		button -> setAlpha(0.0f);
 		digitButtons[i] = button;
 		addAndMakeVisible(digitButtons[i]);
+		digitButtons[i] -> setAlpha(0.0f);
 		digitButtons[i] -> setBounds(x_pos + ((i % 3) * 30), y_pos, 30, 19);
 		int button_id = i + 1;
 		if (i == 10)
 			button_id = 0;
 		button -> onClick = [this, button_id, button] { digitButtonClick(button, button_id); };
 	}
+	
+
+	x_pos = 862;
+	y_pos = 214;
+	
+	for (int i = 0; i < 9; i++)
+	{
+		if (i % 3 == 0 && i != 0)
+			y_pos += 22;
+		TextButton* button = new TextButton();
+		operationButtons[i] = button;
+		addAndMakeVisible(operationButtons[i]);
+		operationButtons[i] -> setAlpha(0.0f);
+		operationButtons[i] -> setBounds(x_pos + ((i % 3) * 31), y_pos, 31, 22);
+		int button_id = i;
+		button -> onClick = [this, button_id, button] { operationButtonClick(button, button_id); };
+	}
+	
 	
 	addAndMakeVisible(buttonStart);
 	buttonStart.setBounds(861, 385, 30, 30);
@@ -50,6 +68,9 @@ MicrowaveAudioProcessorEditor::~MicrowaveAudioProcessorEditor()
 	
 	for(TextButton* button : digitButtons)
 		delete button;
+	
+	for(TextButton* button : operationButtons)
+		delete button;
 }
 
 //===============================================================
@@ -69,6 +90,11 @@ void MicrowaveAudioProcessorEditor::digitButtonClick(TextButton* button, int num
 		microwaveController.addDigit(num);
 	if(num == 10)
 		microwaveController.setTimeCountdown();
+}
+
+void MicrowaveAudioProcessorEditor::operationButtonClick(TextButton* button, int id)
+{
+	
 }
 
 void MicrowaveAudioProcessorEditor::buttonClicked(Button* button)

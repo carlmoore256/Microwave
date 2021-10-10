@@ -19,6 +19,7 @@ public:
 	
 	void buttonClicked(Button* button) override;
 	void digitButtonClick(TextButton*, int);
+	void operationButtonClick(TextButton*, int);
 
 private:
 	
@@ -34,6 +35,20 @@ private:
 	TextButton buttonCancel;
 	TextButton buttonStart;
 	TextButton buttonDoor;
+	
+//	TextButton popcornButton;
+//	TextButton potatoButton;
+//	TextButton pizzaButton;
+//	TextButton cookButton;
+//	TextButton reheatButton;
+//	TextButton softenMeltButton;
+//	TextButton cookTimeButton;
+//	TextButton cookPowerButton;
+//	TextButton defrostButton;
+//	TextButton* operationButtons[9] = { &popcornButton, &potatoButton, &pizzaButton, &cookButton, &reheatButton, &softenMeltButton, &cookTimeButton, &cookPowerButton, &defrostButton };
+	
+	TextButton* operationButtons [9];
+
 	
 //	bool m_DoorOpen = false;
 	

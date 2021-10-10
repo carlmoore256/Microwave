@@ -5,7 +5,7 @@
 #include <JuceHeader.h>
 #include "OperationSound.h"
 #include "InterfaceSound.h"
-#include "PopcornProcessor.hpp"
+//#include "PopcornProcessor.hpp"
 
 //==============================================================================
 /**
@@ -65,11 +65,11 @@ public:
 
 private:
 	
-	PopcornProcessor* popcornProcessor;
+//	PopcornProcessor* popcornProcessor;
+//
+//	AudioBuffer<float> popcornBuffer;
 	
-	AudioBuffer<float> popcornBuffer;
-	
-	void popcorn(AudioBuffer<float>&);
+//	void popcorn(AudioBuffer<float>&);
 	
 	void processInterfaceSounds (AudioBuffer<float>&);
 	AudioBuffer<float> beepBuffer;
